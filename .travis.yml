@@ -37,7 +37,7 @@ env:
   - INSTANCE=testing-ubuntu-1404
   - INSTANCE=testing-ubuntu-1604
   - INSTANCE=testing-ubuntu-1704
-  - INSTANCE=testing-opensuse-leap
+  # - INSTANCE=testing-opensuse-leap
   - INSTANCE=staging-amazonlinux
 
 before_script:
@@ -53,5 +53,6 @@ script:
 matrix:
   include:
   - script:
-    - chef exec delivery local all
+    - chef exec delivery local lint
+    - chef exec delivery local syntax
     env: UNIT_AND_LINT=1

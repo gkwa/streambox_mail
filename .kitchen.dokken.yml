@@ -10,6 +10,9 @@ transport:
 provisioner:
   name: dokken
   deprecations_as_errors: true
+  environments_path: test/environments
+  data_bags_path: test/fixtures/data_bags
+  encrypted_data_bag_secret_key_path: test/fixtures/encrypted_data_bag_secret
 
 verifier:
   name: inspec
@@ -105,6 +108,16 @@ platforms:
     pid_one_command: /bin/systemd
 
 suites:
-- name: default
+- name: testing
+  provisioner:
+    client_rb:
+      environment: testing
+  run_list:
+  - recipe[test::default]
+
+- name: staging
+  provisioner:
+    client_rb:
+      environment: staging
   run_list:
   - recipe[test::default]

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+tmpfile=$(mktemp /tmp/XXX)
+cat << __eot__ >$tmpfile
+From: (Test from $(hostname)) root
+Subject: Test mail
+This is a test email
+__eot__
+
+sendmail root <$tmpfile
