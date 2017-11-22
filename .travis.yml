@@ -1,0 +1,57 @@
+language: ruby
+cache: bundler
+
+sudo: required
+dist: trusty
+
+group: edge
+
+git:
+  depth: 50
+
+addons:
+  apt:
+    sources:
+    - chef-current-trusty
+    packages:
+    - chefdk
+
+# Don't `bundle install` which takes about 1.5 mins
+install: echo "skip bundle install"
+
+services: docker
+
+env:
+  matrix:
+  - INSTANCE=testing-amazonlinux
+  - INSTANCE=testing-debian-7
+  - INSTANCE=testing-debian-8
+  - INSTANCE=testing-debian-9
+  # - INSTANCE=testing-centos-5
+  - INSTANCE=testing-centos-6
+  - INSTANCE=testing-centos-7
+  - INSTANCE=testing-fedora-25
+  - INSTANCE=testing-fedora-26
+  - INSTANCE=testing-fedora-latest
+  - INSTANCE=testing-ubuntu-1204
+  - INSTANCE=testing-ubuntu-1404
+  - INSTANCE=testing-ubuntu-1604
+  - INSTANCE=testing-ubuntu-1704
+  - INSTANCE=testing-opensuse-leap
+  - INSTANCE=staging-amazonlinux
+
+before_script:
+- sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
+- eval "$(chef shell-init bash)"
+- chef --version
+- cookstyle --version
+- foodcritic --version
+
+script:
+- KITCHEN_LOCAL_YAML=.kitchen.dokken.yml kitchen verify ${INSTANCE}
+
+matrix:
+  include:
+  - script:
+    - chef exec delivery local all
+    env: UNIT_AND_LINT=1
