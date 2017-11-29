@@ -59,14 +59,14 @@ platforms:
     image: dokken/centos-7
     pid_one_command: /usr/lib/systemd/systemd
 
-- name: fedora-25
-  driver:
-    image: dokken/fedora-25
-    pid_one_command: /usr/lib/systemd/systemd
-
 - name: fedora-26
   driver:
     image: dokken/fedora-26
+    pid_one_command: /usr/lib/systemd/systemd
+
+- name: fedora-27
+  driver:
+    image: dokken/fedora-27
     pid_one_command: /usr/lib/systemd/systemd
 
 - name: fedora-latest
@@ -98,6 +98,13 @@ platforms:
 - name: ubuntu-17.04
   driver:
     image: dokken/ubuntu-17.04
+    pid_one_command: /bin/systemd
+    intermediate_instructions:
+      - RUN /usr/bin/apt-get update
+
+- name: ubuntu-17.10
+  driver:
+    image: dokken/ubuntu-17.10
     pid_one_command: /bin/systemd
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
