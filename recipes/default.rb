@@ -15,6 +15,13 @@ node.default['postfix']['virtual_aliases']                = {
 include_recipe 'postfix::sasl_auth'
 include_recipe 'postfix::virtual_aliases'
 
+bash 'Create aliases' do
+  code <<-EOH
+  postmap #{node['postfix']['virtual_alias_db']}
+  EOH
+  not_if "test -f #{node['postfix']['virtual_alias_db']}.db"
+end
+
 service 'postfix' do
   action :nothing
 end
